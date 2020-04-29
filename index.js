@@ -1,5 +1,6 @@
 const express = require("express");
 const bodyParser = require("body-parser");
+const signup = require("./routes/signUpRoute");
 const login = require("./routes/loginRoute");
 const account = require("./routes/accountRoute");
 const user = require("./routes/userRoute");
@@ -22,8 +23,11 @@ app.get("/", (req, res) => {
   res.json({ message: "API Working" });
 });
 
+// SIGNUP ROUTE
+app.use("/signup", signup);
+
 // LOGIN ROUTE
-app.use("/", login);
+app.use("/login", login);
 
 // ACCOUNT ROUTE
 app.use("/account", account);
