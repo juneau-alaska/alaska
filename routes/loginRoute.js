@@ -14,17 +14,7 @@ const Account = require("../model/accountModel");
  * @description - Login
  */
 
-router.post("/", [
-    check("username", "Please enter a valid email or username")
-    .not()
-    .isEmpty(),
-    check("email", "Please enter a valid email or username")
-    .not()
-    .isEmpty(),
-    check("password", "Please enter a valid password").isLength({
-      min: 6
-    })
-  ], async (req, res) => {
+router.post("/", async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({
@@ -51,7 +41,7 @@ router.post("/", [
       
       if (!acct1 && !acct2) {
         return res.status(400).json({
-          message: "Incorrect Email/Username or Password!"
+          message: "Incorrect Email, Username or Password!"
         });
       }
 
@@ -60,7 +50,7 @@ router.post("/", [
       const isMatch = await bcrypt.compare(password, acct.password);
       if (!isMatch)
         return res.status(400).json({
-          message: "Incorrect Email/Username or Password!"
+          message: "Incorrect Email, Username or Password!"
         });
 
       const payload = {
