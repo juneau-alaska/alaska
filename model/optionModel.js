@@ -5,6 +5,10 @@ const OptionSchema = mongoose.Schema({
     type: String,
     required: true
   },
+  // image: {
+  //   data: Buffer, 
+  //   contentType: String
+  // },
   votes: {
     type: Number,
     min: 0,
@@ -16,4 +20,4 @@ const OptionSchema = mongoose.Schema({
   }
 });
 
-module.exports = mongoose.model("choice", OptionSchema);
+module.exports = mongoose.model("option", OptionSchema);

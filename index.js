@@ -4,8 +4,7 @@ const signup = require("./routes/signUpRoute");
 const login = require("./routes/loginRoute");
 const account = require("./routes/accountRoute");
 const user = require("./routes/userRoute");
-// const poll = require("./routes/pollRoute");
-// const option = require("./routes/optionRoute");
+const poll = require("./routes/pollRoute");
 const InitiateMongoServer = require("./config/db");
 
 // Initiate Mongo Server
@@ -36,10 +35,7 @@ app.use("/account", account);
 app.use("/user", user);
 
 // POLL ROUTE
-// app.use("/poll", poll);
-
-// OPTION ROUTE
-// app.use("/option", option);
+app.use("/poll", poll);
 
 app.listen(PORT, (req, res) => {
   console.log(`Server Started at PORT ${PORT}`);

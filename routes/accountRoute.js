@@ -13,16 +13,12 @@ const auth = require('../middleware/auth');
  * @description - Update Account
  */
 
-router.put(
-  "/",
-  auth,
-  [
+router.put("/", auth, [
     check("email", "Please enter a valid email").isEmail(),
     check("userId", "Please enter a userId")
     .not()
     .isEmpty()
-  ],
-  async (req, res) => {
+  ], async (req, res) => {
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) {
@@ -37,18 +33,14 @@ router.put(
     } = req.body;
     
     try {
-      let acct;
-
-      acct = await Account.findOne({
+      let acct = await Account.findOne({
         email
       });
-      
       if (!acct) {
         return res.status(400).json({
           message: "Account does not exist"
         });
       }
-
       acct.userId = userId;
 
       await acct.save(function(err) {

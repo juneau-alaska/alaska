@@ -28,15 +28,12 @@ router.get("/:username", auth, async (req, res) => {
  * @description - Create User
  * @param - /user
  */
-router.post(
-  "/",
-  [
+router.post("/", [
     check("username", "Please Enter a valid username")
     .not()
     .isEmpty(),
     check("email", "Please enter a valid email").isEmail(),
-  ],
-  async (req, res) => {
+  ], async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({

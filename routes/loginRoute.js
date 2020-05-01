@@ -14,9 +14,7 @@ const Account = require("../model/accountModel");
  * @description - Login
  */
 
-router.post(
-  "/",
-  [
+router.post("/", [
     check("username", "Please enter a valid email or username")
     .not()
     .isEmpty(),
@@ -26,10 +24,8 @@ router.post(
     check("password", "Please enter a valid password").isLength({
       min: 6
     })
-  ],
-  async (req, res) => {
+  ], async (req, res) => {
     const errors = validationResult(req);
-
     if (!errors.isEmpty()) {
       return res.status(400).json({
         errors: errors.array()
@@ -44,11 +40,11 @@ router.post(
     
     try {
       let acct, acct1, acct2;
-
+      
       acct1 = await Account.findOne({
         email
       });
-
+      
       acct2 = await Account.findOne({
         username
       });
