@@ -5,19 +5,19 @@ const PollSchema = mongoose.Schema({
     type: String,
     required: true
   },
-  category: {
+  /* Category Names */
+  categories: {
     type: Array,
+    default: [],
     required: true
   },
+  /* Option IDs */
   options: {
     type: Array,
-    required: true,
-    default: []
+    default: [],
+    required: true
   },
-  numTimesAnswered: {
-    type: Number, 
-    default: 0
-  },
+  /* User ID */
   createdBy: {
     type: String,
     required: true
