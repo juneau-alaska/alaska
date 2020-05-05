@@ -10,7 +10,7 @@ const auth = require('../../middleware/auth');
 * @description - Get All Categories
 * @param - /categories
 */
-router.get("/", /*auth,*/ async (req, res) => {
+router.get("/", auth, async (req, res) => {
     try {
         let categories = await Category.find();
         res.status(200).json(categories);

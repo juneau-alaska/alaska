@@ -10,7 +10,7 @@ const auth = require('../../middleware/auth');
 * @description - Get Category
 * @param - /category/:name
 */
-router.get("/category/:name", /*auth,*/ async (req, res) => {
+router.get("/category/:name", auth, async (req, res) => {
   const name = req.params.name;
   let _nameUC = name.toUpperCase();
   try {
@@ -31,7 +31,7 @@ router.get("/category/:name", /*auth,*/ async (req, res) => {
 * @description - Create Category
 * @param - /category
 */
-router.post("/", /*auth,*/ async (req, res) => {
+router.post("/", auth, async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({

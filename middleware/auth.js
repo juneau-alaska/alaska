@@ -1,11 +1,11 @@
 const jwt = require("jsonwebtoken");
 
 module.exports = function(req, res, next) {
-  const token = req.header("token");
+  const token = req.header('token') || req.header('authorization');
   if (!token) return res.status(401).json({ message: "Auth Error" });
 
   try {
-    const decoded = jwt.verify(token, "secret");
+    const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
     req.user = decoded.user;
     next();
   } catch (e) {

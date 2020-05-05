@@ -10,7 +10,7 @@ const auth = require('../../middleware/auth');
 * @description - Get All Polls
 * @param - /polls
 */
-router.get("/", /*auth,*/ async (req, res) => {
+router.get("/", auth, async (req, res) => {
     try {
       let polls = await Poll.find();
   
@@ -27,7 +27,7 @@ router.get("/", /*auth,*/ async (req, res) => {
  * @description - Get All Polls by Category
  * @param - /polls/:category
  */
-router.get("/:category", /*auth,*/ async (req, res) => {
+router.get("/:category", auth, async (req, res) => {
     const category = req.params.category;
     console.log(category)
     try {

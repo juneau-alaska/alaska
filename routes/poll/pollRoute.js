@@ -10,7 +10,7 @@ const auth = require('../../middleware/auth');
  * @description - Get a Single Poll
  * @param - /poll/:id
  */
-router.get("/:id", /*auth,*/ async (req, res) => {
+router.get("/:id", auth, async (req, res) => {
   const _id = req.params.id;
   
   try {
@@ -31,7 +31,7 @@ router.get("/:id", /*auth,*/ async (req, res) => {
 * @description - Create Poll
 * @param - /poll
 */
-router.post("/", /*auth,*/ async (req, res) => {
+router.post("/", auth, async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({
