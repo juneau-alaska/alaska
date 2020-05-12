@@ -8,20 +8,38 @@ const auth = require('../middleware/auth');
 /**
  * @method - GET
  * @description - Get User
- * @param - /user/:username
+ * @param - /user/:id
  */
 
-router.get("/:username", auth, async (req, res) => {
-  const username = req.params.username
+router.get("/:id", auth, async (req, res) => {
+  const userId = req.params.id
   
   try {
     // request.user is getting fetched from Middleware after token authentication
-    const user = await User.find({ "username": req.user.username });
+    const user = await User.find({ "_id": userId });
     res.json(user);
   } catch (e) {
     res.send({ message: "Error in Fetching user" });
   }
 });
+
+// /**
+//  * @method - GET
+//  * @description - Get User
+//  * @param - /user/:username
+//  */
+
+// router.get("/:username", auth, async (req, res) => {
+//   const username = req.params.username
+  
+//   try {
+//     // request.user is getting fetched from Middleware after token authentication
+//     const user = await User.find({ "username": req.user.username });
+//     res.json(user);
+//   } catch (e) {
+//     res.send({ message: "Error in Fetching user" });
+//   }
+// });
 
 /**
  * @method - POST
