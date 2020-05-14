@@ -65,7 +65,6 @@ router.post(
       });
 
       const salt = await bcrypt.genSalt(10);
-      console.log(salt)
       acct.password = await bcrypt.hash(password, salt);
 
       await acct.save();
