@@ -8,8 +8,7 @@ const PollSchema = mongoose.Schema({
   /* Category Names */
   categories: {
     type: Array,
-    default: [],
-    required: true
+    default: []
   },
   /* Option IDs */
   options: {

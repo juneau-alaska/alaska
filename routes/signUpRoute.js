@@ -7,6 +7,7 @@ const jwt = require("jsonwebtoken");
 const router = express.Router();
 
 const Account = require("../model/accountModel");
+const User = require("../model/userModel");
 
 /**
  * @method - POST
@@ -67,24 +68,39 @@ router.post(
       const salt = await bcrypt.genSalt(10);
       acct.password = await bcrypt.hash(password, salt);
 
-      await acct.save();
+      acct.save(function(err, doc) {
+        if (err) return console.error(err);
+        let user = new User({
+          username,
+          email
+        });
 
-      const payload = {
-        acct: {
-          id: acct.id
-        }
-      };
-
-      jwt.sign(
-        payload,
-        process.env.ACCESS_TOKEN_SECRET, 
-        (err, token) => {
-          if (err) throw err;
-          res.status(200).json({
-            token
+        user.save(function(err, doc) {
+          if (err) return console.error(err);          
+          acct.userId = user.id;
+          acct.save(function(err, doc) {
+            if (err) return console.error(err);
+            const payload = {
+              acct: {
+                id: acct.id
+              }
+            };
+    
+            jwt.sign(
+              payload,
+              process.env.ACCESS_TOKEN_SECRET, 
+              (err, token) => {
+                if (err) throw err;
+                res.status(200).json({
+                  token,
+                  user
+                });
+              }
+            );
           });
-        }
-      );
+        });
+
+      });
     } catch (err) {
       console.log(err.message);
       res.status(500).send("Error in Saving");
