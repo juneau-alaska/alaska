@@ -23,23 +23,41 @@ router.get("/:id", auth, async (req, res) => {
   }
 });
 
-// /**
-//  * @method - GET
-//  * @description - Get User
-//  * @param - /user/:username
-//  */
+/**
+ * @method - PUT
+ * @description - Update User
+ * @param - /user/:id
+ */
 
-// router.get("/:username", auth, async (req, res) => {
-//   const username = req.params.username
+router.put("/:id", auth, async (req, res) => {
+  const _id = req.params.id;
+  const body = req.body;
+
+  try {
+    let user = await User.findOne({
+      _id: _id
+    });
   
-//   try {
-//     // request.user is getting fetched from Middleware after token authentication
-//     const user = await User.find({ "username": req.user.username });
-//     res.json(user);
-//   } catch (e) {
-//     res.send({ message: "Error in Fetching user" });
-//   }
-// });
+    for (var key in body) {
+      user[key] = body[key];
+    }
+
+    await user.save(function(err) {
+      if (err) {
+        res.status(400).json({
+          message: err.message
+        });
+      } else {
+        res.status(200).json({
+          message: "Updated User",
+          user
+        });
+      }
+    });
+  } catch (e) {
+    res.send({ message: "Error in Updating user" });
+  }
+});
 
 /**
  * @method - POST

@@ -27,6 +27,49 @@ router.get("/:id", auth, async (req, res) => {
 });
   
 /**
+* @method - PUT
+* @description - Put Option
+* @param - /option/vote/:id
+*/
+router.put("/vote/:id", auth, async (req, res) => {
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    return res.status(400).json({
+      errors: errors.array()
+    });
+  }
+
+  const _id = req.params.id;
+
+  try {
+    let option = await Option.findOne({
+      _id: _id
+    });
+
+    if (option) {
+      option.votes += 1;
+    }
+
+    await option.save(function(err) {
+      if (err) {
+        res.status(400).json({
+          message: err.message
+        });
+      } else {
+        res.status(200).json({
+          message: "Counted Vote",
+          option
+        });
+      }
+    });
+  } catch (err) {
+    console.log(err.message);
+    res.status(500).send("Error in updating option");
+  }
+});
+
+/**
  * @method - POST
  * @description - Create Poll Options
  * @param - /option
