@@ -12,7 +12,7 @@ const auth = require('../../middleware/auth');
 */
 router.get("/", auth, async (req, res) => {
     try {
-      let polls = await Poll.find();
+      let polls = await Poll.find().sort({_id: -1}).limit(50);
   
       res.status(200).send(polls);
       
