@@ -5,10 +5,10 @@ const OptionSchema = mongoose.Schema({
     type: String,
     required: true
   },
-  // image: {
-  //   data: Buffer, 
-  //   contentType: String
-  // },
+  contentType: {
+    type: String,
+    required: true
+  },
   votes: {
     type: Number,
     min: 0,

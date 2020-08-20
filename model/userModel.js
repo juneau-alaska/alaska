@@ -17,7 +17,7 @@ const UserSchema = mongoose.Schema({
     type: Array,
     default: []
   },
-  selectedChoices: {
+  selectedOptions: {
     type: Array,
     default: []
   },
