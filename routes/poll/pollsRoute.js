@@ -6,19 +6,22 @@ const Poll = require("../../model/pollModel");
 const auth = require('../../middleware/auth');
 
 /**
-* @method - GET
-* @description - Get All Polls
+* @method - POST
+* @description - Query Polls by Created Date
 * @param - /polls
 */
-router.get("/", auth, async (req, res) => {
+router.post("/", auth, async (req, res) => {
     try {
-      let polls = await Poll.find().sort({_id: -1}).limit(50);
-  
-      res.status(200).send(polls);
+        var createdAtBefore = req.body.createdAtBefore || Date.now();
+        let polls = await Poll.find({createdAt: { $lt: createdAtBefore}})
+            .sort({createdAt: -1})
+            .limit(10);
+    
+        res.status(200).send(polls);
       
     } catch (err) {
-      console.log(err.message);
-      res.status(500).send("Error in fetching category");
+        console.log(err.message);
+        res.status(500).send("Error in fetching category");
     }
 });
   
