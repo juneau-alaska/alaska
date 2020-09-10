@@ -40,13 +40,12 @@ router.post("/", auth, async (req, res) => {
   }
 
   const {
-    name,
-    _nameUC
+    name
   } = req.body;
 
   try {
     let category = await Category.findOne({
-      _nameUC
+      name
     });
     if (category) {
       return res.status(400).json({
@@ -55,8 +54,7 @@ router.post("/", auth, async (req, res) => {
     }
 
     category = new Category({
-      name,
-      _nameUC
+      name
     });
     await category.save();
     

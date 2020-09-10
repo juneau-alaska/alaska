@@ -4,10 +4,6 @@ const CategorySchema = mongoose.Schema({
   name: {
     type: String,
     required: true
-  },
-  _nameUC: {
-    type: String,
-    required: true
   }
 });
 

@@ -20,4 +20,26 @@ router.get("/", auth, async (req, res) => {
     }
 });
 
+/**
+* @method - POST
+* @description - Get Categories w/ Text
+* @param - /polls
+*/
+router.post("/", auth, async (req, res) => {
+    try {
+        var partialText = req.body.partialText || "";
+        var escapedPartial = escape(partialText);
+
+        let categories = await Category.find({name: { $text: { $search: escapedPartial, $caseSensitive :true } }})
+            .sort({name: 1})
+            .limit(10);
+    
+        res.status(200).send(polls);
+      
+    } catch (err) {
+        console.log(err.message);
+        res.status(500).send("Error in fetching category");
+    }
+});
+
 module.exports = router;
