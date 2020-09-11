@@ -21,11 +21,11 @@ const UserSchema = mongoose.Schema({
     type: Array,
     default: []
   },
-  followUsers: {
+  followingUsers: {
     type: Array,
     default: []
   },
-  followCategories: {
+  followingCategories: {
     type: Array,
     default: []
   },

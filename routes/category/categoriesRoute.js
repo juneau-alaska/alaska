@@ -30,11 +30,11 @@ router.post("/", auth, async (req, res) => {
         var partialText = req.body.partialText || "";
         var escapedPartial = escape(partialText);
 
-        let categories = await Category.find({name: { $text: { $search: escapedPartial, $caseSensitive :true } }})
+        let categories = await Category.find({name: new RegExp(escapedPartial, 'i')})
             .sort({name: 1})
             .limit(10);
     
-        res.status(200).send(polls);
+        res.status(200).send(categories);
       
     } catch (err) {
         console.log(err.message);

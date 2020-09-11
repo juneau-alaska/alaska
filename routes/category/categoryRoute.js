@@ -12,14 +12,13 @@ const auth = require('../../middleware/auth');
 */
 router.get("/category/:name", auth, async (req, res) => {
   const name = req.params.name;
-  let _nameUC = name.toUpperCase();
   try {
     let category = await Category.findOne({
-      _nameUC: _nameUC
+      name: name
     });
 
     res.status(200).send(category);
-    
+
   } catch (err) {
     console.log(err.message);
     res.status(500).send("Error in fetching category");
@@ -48,16 +47,14 @@ router.post("/", auth, async (req, res) => {
       name
     });
     if (category) {
-      return res.status(400).json({
-        msg: "Category Already Exists"
-      });
+      return res.status(200).json(category);
     }
 
     category = new Category({
       name
     });
     await category.save();
-    
+
     res.status(200).json(category);
 
   } catch (err) {

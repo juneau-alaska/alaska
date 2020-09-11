@@ -4,6 +4,10 @@ const CategorySchema = mongoose.Schema({
   name: {
     type: String,
     required: true
+  },
+  followers: {
+    type: Array,
+    default: []
   }
 });
 
