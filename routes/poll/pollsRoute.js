@@ -12,12 +12,18 @@ const auth = require('../../middleware/auth');
 */
 router.post("/", auth, async (req, res) => {
     try {
-        var timestamp = req.body.createdAtBefore,
-            createdAtBefore = timestamp ? new Date(req.body.createdAtBefore) : new Date();
+        var prevId = req.body.prevId,
+            polls;
 
-        let polls = await Poll.find({ createdAt: { $lte: createdAtBefore } })
-            .sort({ createdAt: -1 })
-            .limit(10);
+        if (prevId !== null) {
+            polls = await Poll.find({ _id: { $lt: prevId } })
+                .sort({ _id: -1 })
+                .limit(2);
+        } else {
+            polls = await Poll.find()
+            .sort({ _id: -1 })
+            .limit(2);
+        }
 
         res.status(200).send(polls);
 
