@@ -58,7 +58,7 @@ router.post("/", auth, async (req, res) => {
     res.status(200).json(poll);
   } catch (err) {
     console.log(err.message);
-    res.status(500).send("Error in Saving");
+    res.status(400).send("Error in Saving");
   }
 });
 

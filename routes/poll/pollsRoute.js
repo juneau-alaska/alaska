@@ -12,19 +12,21 @@ const auth = require('../../middleware/auth');
 */
 router.post("/", auth, async (req, res) => {
     try {
-        var createdAtBefore = req.body.createdAtBefore || Date.now();
-        let polls = await Poll.find({createdAt: { $lt: createdAtBefore}})
-            .sort({createdAt: -1})
+        var timestamp = req.body.createdAtBefore,
+            createdAtBefore = timestamp ? new Date(req.body.createdAtBefore) : new Date();
+
+        let polls = await Poll.find({ createdAt: { $lte: createdAtBefore } })
+            .sort({ createdAt: -1 })
             .limit(10);
-    
+
         res.status(200).send(polls);
-      
+
     } catch (err) {
         console.log(err.message);
         res.status(500).send("Error in fetching category");
     }
 });
-  
+
 /**
  * @method - GET
  * @description - Get All Polls by Category
@@ -39,7 +41,7 @@ router.get("/:category", auth, async (req, res) => {
         });
 
         res.status(200).send(poll);
-        
+
     } catch (err) {
         console.log(err.message);
         res.status(500).send("Error in fetching category");

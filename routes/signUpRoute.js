@@ -46,7 +46,7 @@ router.post(
       });
       if (acct) {
         return res.status(400).json({
-          msg: "User Already Exists"
+          msg: "Email has already been used."
         });
       }
 
@@ -55,7 +55,7 @@ router.post(
       });
       if (acct) {
         return res.status(400).json({
-          msg: "User Already Exists"
+          msg: "Username has already been taken."
         });
       }
 
@@ -103,7 +103,9 @@ router.post(
       });
     } catch (err) {
       console.log(err.message);
-      res.status(500).send("Error in Saving");
+      res.status(500).json({
+        msg: "Something went wrong, please try again"
+      });
     }
   }
 );
