@@ -18,11 +18,11 @@ router.post("/", auth, async (req, res) => {
         if (prevId !== null) {
             polls = await Poll.find({ _id: { $lt: prevId } })
                 .sort({ _id: -1 })
-                .limit(2);
+                .limit(10);
         } else {
             polls = await Poll.find()
             .sort({ _id: -1 })
-            .limit(2);
+            .limit(10);
         }
 
         res.status(200).send(polls);
