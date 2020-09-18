@@ -156,6 +156,27 @@ router.post("/", auth, async (req, res) => {
 });
 
 /**
+* @method - DELETE
+* @description - Delete Option
+* @param - /option/:id
+*/
+router.delete("/:id", auth, async (req, res) => {
+  const _id = req.params.id;
+  
+  try {
+      let option = await Option.find({
+        _id: _id
+      });
+
+      await option.delete();
+      res.status(200).send("Successfully deleted option");
+  } catch (err) {
+      console.log(err.message);
+      res.status(500).send("Error in deleting option");
+  }
+})
+
+/**
  * @method - POST
  * @description - Upload Image to AWS S3
  * @param - /option/generatePreAssignedUrl
