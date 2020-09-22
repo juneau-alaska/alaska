@@ -162,18 +162,14 @@ router.post("/", auth, async (req, res) => {
 */
 router.delete("/:id", auth, async (req, res) => {
   const _id = req.params.id;
-  
-  try {
-      let option = await Option.find({
-        _id: _id
-      });
 
-      await option.delete();
-      res.status(200).send("Successfully deleted option");
-  } catch (err) {
-      console.log(err.message);
+  Option.deleteOne({ _id: _id }, function (err) {
+    if (err) {
       res.status(500).send("Error in deleting option");
-  }
+    } else {
+      res.status(200).send("Successfully deleted option");
+    }
+  });
 })
 
 /**

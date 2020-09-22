@@ -69,18 +69,14 @@ router.post("/", auth, async (req, res) => {
 */
 router.delete("/:id", auth, async (req, res) => {
   const _id = req.params.id;
-  
-  try {
-      let poll = await Poll.find({
-        _id: _id
-      });
 
-      await poll.delete();
+  Poll.deleteOne({ _id: _id }, function (err) {
+    if (err) {
+      res.status(400).send("Error in deleting poll");
+    } else {
       res.status(200).send("Successfully deleted poll");
-  } catch (err) {
-      console.log(err.message);
-      res.status(500).send("Error in deleting poll");
-  }
+    }
+  });
 })
 
 module.exports = router;
