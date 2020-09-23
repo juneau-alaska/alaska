@@ -1,5 +1,4 @@
 const express = require("express");
-const { check, validationResult } = require('express-validator');
 const router = express.Router();
 
 const Category = require("../../model/categoryModel");
@@ -23,7 +22,7 @@ router.get("/", auth, async (req, res) => {
 /**
 * @method - POST
 * @description - Get Categories w/ Text
-* @param - /polls
+* @param - /categories
 */
 router.post("/", auth, async (req, res) => {
     try {

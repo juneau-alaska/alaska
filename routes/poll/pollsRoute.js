@@ -1,5 +1,4 @@
 const express = require("express");
-const { check, validationResult } = require('express-validator');
 const router = express.Router();
 
 const Poll = require("../../model/pollModel");
@@ -40,7 +39,7 @@ router.post("/", auth, async (req, res) => {
  */
 router.get("/:category", auth, async (req, res) => {
     const category = req.params.category;
-    console.log(category)
+    
     try {
         let poll = await Poll.find({
             categories: category

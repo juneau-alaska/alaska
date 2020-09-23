@@ -11,6 +11,7 @@ const poll = require("./routes/poll/pollRoute");
 const polls = require("./routes/poll/pollsRoute");
 
 const option = require("./routes/option/optionRoute");
+const options = require("./routes/option/optionsRoute");
 
 const category = require("./routes/category/categoryRoute");
 const categories = require("./routes/category/categoriesRoute");
@@ -50,6 +51,7 @@ app.use("/polls", polls);
 
 // OPTION(S) ROUTE
 app.use("/option", option);
+app.use("/options", options);
 
 // CATEGOR(Y/IES) ROUTE
 app.use("/category", category);
