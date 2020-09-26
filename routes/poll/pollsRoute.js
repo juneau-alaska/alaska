@@ -20,8 +20,8 @@ router.post("/", auth, async (req, res) => {
                 .limit(10);
         } else {
             polls = await Poll.find()
-            .sort({ _id: -1 })
-            .limit(10);
+                .sort({ _id: -1 })
+                .limit(10);
         }
 
         res.status(200).send(polls);
@@ -39,7 +39,7 @@ router.post("/", auth, async (req, res) => {
  */
 router.get("/:category", auth, async (req, res) => {
     const category = req.params.category;
-    
+
     try {
         let poll = await Poll.find({
             categories: category

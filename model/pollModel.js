@@ -10,6 +10,12 @@ const PollSchema = mongoose.Schema({
     type: Array,
     default: []
   },
+  /* Comment IDs */
+  comments: {
+    type: Array,
+    default: [],
+    required: true
+  },
   /* Option IDs */
   options: {
     type: Array,
@@ -22,6 +28,10 @@ const PollSchema = mongoose.Schema({
     required: true
   },
   createdAt: {
+    type: Date,
+    default: Date.now
+  },
+  updatedAt: {
     type: Date,
     default: Date.now
   }

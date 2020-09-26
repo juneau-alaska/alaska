@@ -16,7 +16,6 @@ const s3 = new AWS.S3({
 });
 
 const deleteS3Images = (optionKeys) => {
-    console.log(optionKeys);
     var params = {
         Bucket: S3_BUCKET,
         Delete: {
