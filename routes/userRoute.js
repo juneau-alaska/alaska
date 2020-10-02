@@ -55,7 +55,9 @@ router.put("/:id", auth, async (req, res) => {
       }
     });
   } catch (e) {
-    res.send({ message: "Error in Updating user" });
+     res.status(400).json({
+        message: "Error in Updating user"
+    });
   }
 });
 

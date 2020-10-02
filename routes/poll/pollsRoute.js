@@ -28,7 +28,7 @@ router.post("/", auth, async (req, res) => {
 
     } catch (err) {
         console.log(err.message);
-        res.status(500).send("Error in fetching category");
+        res.status(400).send("Error in fetching category");
     }
 });
 
@@ -41,15 +41,15 @@ router.get("/:category", auth, async (req, res) => {
     const category = req.params.category;
 
     try {
-        let poll = await Poll.find({
+        let polls = await Poll.find({
             categories: category
         });
 
-        res.status(200).send(poll);
+        res.status(200).send(polls);
 
     } catch (err) {
         console.log(err.message);
-        res.status(500).send("Error in fetching category");
+        res.status(400).send("Error in fetching category");
     }
 });
 

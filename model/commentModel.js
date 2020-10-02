@@ -1,11 +1,20 @@
 const mongoose = require("mongoose");
 
 const CommentSchema = mongoose.Schema({
-  comment: {
+  content: {
     type: String,
     required: true
   },
-  /* User ID */
+  // poll or comment id
+  parent: {
+    type: String,
+    required: true
+  },
+  // comment ids
+  replies: {
+    type: Array,
+    default: []
+  },
   createdBy: {
     type: String,
     required: true

@@ -10,7 +10,7 @@ const auth = require('../../middleware/auth');
 * @description - Get Category
 * @param - /category
 */
-router.get("/category", auth, async (req, res) => {
+router.get("/", auth, async (req, res) => {
   const name = req.body.name;
   try {
     let category = await Category.findOne({

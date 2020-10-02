@@ -63,6 +63,43 @@ router.post("/", auth, async (req, res) => {
 });
 
 /**
+ * @method - PUT
+ * @description - Update Poll
+ * @param - /poll/:id
+ */
+router.put("/:id", auth, async (req, res) => {
+  const _id = req.params.id;
+  const body = req.body;
+
+  try {
+    let poll = await Poll.findOne({
+      _id: _id
+    });
+
+    for (var key in body) {
+      poll[key] = body[key];
+    }
+
+    await poll.save(function(err) {
+      if (err) {
+        res.status(400).json({
+          message: err.message
+        });
+      } else {
+        res.status(200).json({
+          message: "Updated Poll",
+          poll
+        });
+      }
+    });
+  } catch (e) {
+    res.status(400).json({
+        message: "Error in Updating poll"
+    });
+  }
+});
+
+/**
 * @method - DELETE
 * @description - Delete Poll
 * @param - /poll/:id
