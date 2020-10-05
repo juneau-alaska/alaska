@@ -12,7 +12,6 @@ const auth = require('../../middleware/auth');
  */
 router.get("/:parentID", auth, async (req, res) => {
     const parentID = req.params.parentID;
-    console.log(parentID);
 
     try {
         let comments = await Comment.find({
