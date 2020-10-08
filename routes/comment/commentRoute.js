@@ -6,6 +6,27 @@ const Comment = require("../../model/commentModel");
 const auth = require('../../middleware/auth');
 
 /**
+ * @method - GET
+ * @description - Get a Single Comment
+ * @param - /comment/:id
+ */
+router.get("/:id", auth, async (req, res) => {
+  const _id = req.params.id;
+
+  try {
+      let comment = await Comment.findOne({
+        _id: _id
+      });
+
+      res.status(200).send(comment);
+
+  } catch (err) {
+      console.log(err.message);
+      res.status(500).send("Error in fetching category");
+  }
+});
+
+/**
 * @method - POST
 * @description - Create Comment
 * @param - /comment

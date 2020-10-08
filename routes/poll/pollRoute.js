@@ -14,7 +14,7 @@ router.get("/:id", auth, async (req, res) => {
   const _id = req.params.id;
   
   try {
-      let poll = await Poll.find({
+      let poll = await Poll.findOne({
         _id: _id
       });
 
