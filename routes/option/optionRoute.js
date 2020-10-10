@@ -82,7 +82,7 @@ router.get("/:id", auth, async (req, res) => {
   
 /**
 * @method - PUT
-* @description - Put Option
+* @description - Vote Option
 * @param - /option/vote/:id
 */
 router.put("/vote/:id", auth, async (req, res) => {

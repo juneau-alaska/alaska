@@ -28,7 +28,6 @@ router.get("/:id", auth, async (req, res) => {
  * @description - Update User
  * @param - /user/:id
  */
-
 router.put("/:id", auth, async (req, res) => {
   const _id = req.params.id;
   const body = req.body;

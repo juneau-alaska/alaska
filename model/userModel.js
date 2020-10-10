@@ -21,6 +21,10 @@ const UserSchema = mongoose.Schema({
     type: Array,
     default: []
   },
+  likedComments: {
+    type: Array,
+    default: []
+  },
   followingUsers: {
     type: Array,
     default: []

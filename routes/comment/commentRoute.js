@@ -98,4 +98,51 @@ router.put("/:id", auth, async (req, res) => {
   }
 });
 
+/**
+* @method - PUT
+* @description - Like Comment
+* @param - /comment/like/:id
+*/
+router.put("/like/:id", auth, async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({
+      errors: errors.array()
+    });
+  }
+
+  const _id = req.params.id;
+  const liked = req.body.liked;
+
+  try {
+    let comment = await Comment.findOne({
+      _id: _id
+    });
+
+    if (comment) {
+      if (liked) {
+        comment.likes -= 1;
+      } else {
+        comment.likes += 1;
+      }
+    }
+
+    await comment.save(function(err) {
+      if (err) {
+        res.status(400).json({
+          message: err.message
+        });
+      } else {
+        res.status(200).json({
+          message: "Comment liked",
+          comment
+        });
+      }
+    });
+  } catch (err) {
+    console.log(err.message);
+    res.status(500).send("Error in updating comment");
+  }
+});
+
 module.exports = router;
