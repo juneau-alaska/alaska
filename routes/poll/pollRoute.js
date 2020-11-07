@@ -41,7 +41,7 @@ router.post("/", auth, async (req, res) => {
 
   const {
     prompt,
-    categories,
+    category,
     options,
     createdBy
   } = req.body;
@@ -49,7 +49,7 @@ router.post("/", auth, async (req, res) => {
   try {
     let poll = new Poll({
       prompt,
-      categories,
+      category,
       options,
       createdBy
     });
