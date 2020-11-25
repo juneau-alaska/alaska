@@ -6,18 +6,18 @@ const auth = require('../../middleware/auth');
 
 /**
 * @method - POST
-* @description - Query Polls by Created Date
+* @description - Query Polls by Created Date and Category
 * @param - /polls
 */
 router.post("/", auth, async (req, res) => {
     try {
         var prevId = req.body.prevId,
-            category = req.body.category,
+            categories = req.body.categories,
             polls;
 
         if (prevId !== null) {
-            if (category != null) {
-                polls = await Poll.find({ _id: { $lt: prevId }, category: category })
+            if (categories !== null) {
+                polls = await Poll.find({ _id: { $lt: prevId }, category: { $in: categories } })
                     .sort({ _id: -1 })
                     .limit(10);
             } else {
@@ -26,8 +26,8 @@ router.post("/", auth, async (req, res) => {
                     .limit(10);
             }
         } else {
-            if (category != null) {
-                polls = await Poll.find({category: category})
+            if (categories !== null) {
+                polls = await Poll.find({ category: { $in: categories } })
                     .sort({ _id: -1 })
                     .limit(10);
             } else {
