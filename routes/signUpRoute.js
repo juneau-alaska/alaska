@@ -70,7 +70,6 @@ router.post(
       user.save(function(err, doc) {
         if (err) return console.error(err);
 
-        console.log(user);
         var userId = user.id;
 
         let acct = new Account({
@@ -80,8 +79,6 @@ router.post(
 
         acct.save(function(err, doc) {
           if (err) return console.error(err);
-
-          console.log(acct);
 
           const payload = {
             acct: {
