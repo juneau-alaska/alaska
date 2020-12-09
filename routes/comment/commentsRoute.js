@@ -16,7 +16,7 @@ router.get("/:parentID", auth, async (req, res) => {
     try {
         let comments = await Comment.find({
             parent: parentID
-        }).sort({ _id: -1 });
+        }).sort({ _id: 1 });
 
         res.status(200).send(comments);
 

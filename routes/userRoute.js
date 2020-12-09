@@ -24,6 +24,23 @@ router.get("/:id", auth, async (req, res) => {
 });
 
 /**
+ * @method - GET
+ * @description - Get User
+ * @param - /user/username/:username
+ */
+
+router.get("/username/:username", auth, async (req, res) => {
+  const username = req.params.username;
+
+  try {
+    const user = await User.findOne({ "username": username });
+    res.json(user);
+  } catch (e) {
+    res.send({ message: "Error in Fetching user" });
+  }
+});
+
+/**
  * @method - PUT
  * @description - Update User
  * @param - /user/:id
@@ -31,31 +48,70 @@ router.get("/:id", auth, async (req, res) => {
 router.put("/:id", auth, async (req, res) => {
   const _id = req.params.id;
   const body = req.body;
+  const email = req.body.email;
+  const username = req.body.username;
+  let user;
 
   try {
-    let user = await User.findOne({
-      _id: _id
-    });
-  
-    for (var key in body) {
-      user[key] = body[key];
-    }
-
-    await user.save(function(err) {
-      if (err) {
-        res.status(400).json({
-          message: err.message
-        });
-      } else {
-        res.status(200).json({
-          message: "Updated User",
-          user
+    if (email) {
+      user = await User.findOne({
+         email: email
+      });
+      if (user) {
+        return res.status(400).json({
+          msg: "Email has already been used."
         });
       }
+    }
+
+    if (username) {
+      user = await User.findOne({
+         username: username
+      });
+      if (user) {
+        return res.status(400).json({
+          msg: "Username has already been used."
+        });
+      }
+    }
+
+    user = await User.findOne({
+      _id: _id
     });
+
+    if (user) {
+        for (var key in body) {
+          if (body[key]) {
+            user[key] = body[key];
+          }
+        }
+
+        const timeElapsed = Date.now();
+        const today = new Date(timeElapsed);
+        const isoString = today.toISOString();
+
+        user['updatedAt'] = isoString;
+
+        await user.save(function(err) {
+          if (err) {
+            res.status(400).json({
+              message: err.message
+            });
+          } else {
+            res.status(200).json({
+              message: "Updated User",
+              user
+            });
+          }
+        });
+    } else {
+        return res.status(400).json({
+          msg: "An error occurred while updating user info."
+        });
+    }
   } catch (e) {
      res.status(400).json({
-        message: "Error in Updating user"
+        message: "An error occurred while updating user info."
     });
   }
 });

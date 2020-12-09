@@ -6,50 +6,52 @@ const auth = require('../../middleware/auth');
 
 /**
 * @method - POST
-* @description - Query Polls by Created Date
+* @description - Query Polls by Created Date and Category
 * @param - /polls
 */
 router.post("/", auth, async (req, res) => {
     try {
-        var prevId = req.body.prevId,
+        var limit = 15,
+            prevId = req.body.prevId,
+            createdBy = req.body.createdBy,
+            categories = req.body.categories,
             polls;
 
-        if (prevId !== null) {
-            polls = await Poll.find({ _id: { $lt: prevId } })
-                .sort({ _id: -1 })
-                .limit(10);
+        if (prevId) {
+            if (createdBy) {
+                polls = await Poll.find({ _id: { $lt: prevId }, createdBy: createdBy })
+                    .sort({ _id: -1 })
+                    .limit(limit);
+            } else if (categories) {
+                polls = await Poll.find({ _id: { $lt: prevId }, category: { $in: categories } })
+                    .sort({ _id: -1 })
+                    .limit(limit);
+            } else {
+                polls = await Poll.find({ _id: { $lt: prevId }})
+                    .sort({ _id: -1 })
+                    .limit(limit);
+            }
         } else {
-            polls = await Poll.find()
-                .sort({ _id: -1 })
-                .limit(10);
+            if (createdBy) {
+                polls = await Poll.find({ createdBy: createdBy })
+                    .sort({ _id: -1 })
+                    .limit(limit);
+            } else if (categories) {
+                polls = await Poll.find({ category: { $in: categories } })
+                    .sort({ _id: -1 })
+                    .limit(limit);
+            } else {
+                polls = await Poll.find()
+                    .sort({ _id: -1 })
+                    .limit(limit);
+            }
         }
 
         res.status(200).send(polls);
 
     } catch (err) {
         console.log(err.message);
-        res.status(400).send("Error in fetching category");
-    }
-});
-
-/**
- * @method - GET
- * @description - Get All Polls by Category
- * @param - /polls/:category
- */
-router.get("/:category", auth, async (req, res) => {
-    const category = req.params.category;
-
-    try {
-        let polls = await Poll.find({
-            categories: category
-        });
-
-        res.status(200).send(polls);
-
-    } catch (err) {
-        console.log(err.message);
-        res.status(400).send("Error in fetching category");
+        res.status(400).send("Error in fetching polls");
     }
 });
 
