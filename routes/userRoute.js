@@ -24,6 +24,23 @@ router.get("/:id", auth, async (req, res) => {
 });
 
 /**
+ * @method - GET
+ * @description - Get User
+ * @param - /user/username/:username
+ */
+
+router.get("/username/:username", auth, async (req, res) => {
+  const username = req.params.username;
+
+  try {
+    const user = await User.findOne({ "username": username });
+    res.json(user);
+  } catch (e) {
+    res.send({ message: "Error in Fetching user" });
+  }
+});
+
+/**
  * @method - PUT
  * @description - Update User
  * @param - /user/:id

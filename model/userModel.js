@@ -9,6 +9,9 @@ const UserSchema = mongoose.Schema({
     type: String,
     required: true
   },
+  description: {
+    type: String,
+  },
   createdPolls: {
     type: Array,
     default: []

@@ -37,70 +37,72 @@ router.post(
     const {
       username,
       email,
-      password
     } = req.body;
 
+    var password = req.body.password;
+    const salt = await bcrypt.genSalt(10);
+    password = await bcrypt.hash(password, salt);
+
     try {
-      let acct = await Account.findOne({
-        email
-      });
-      if (acct) {
-        return res.status(400).json({
-          msg: "Email has already been used."
-        });
-      }
-
-      acct = await Account.findOne({
-        username
-      });
-      if (acct) {
-        return res.status(400).json({
-          msg: "Username has already been taken."
-        });
-      }
-
-      acct = new Account({
-        username,
-        email,
-        password
-      });
-
-      const salt = await bcrypt.genSalt(10);
-      acct.password = await bcrypt.hash(password, salt);
-
-      acct.save(function(err, doc) {
-        if (err) return console.error(err);
-        let user = new User({
-          username,
+      let user = await User.findOne({
           email
         });
-
-        user.save(function(err, doc) {
-          if (err) return console.error(err);          
-          acct.userId = user.id;
-          acct.save(function(err, doc) {
-            if (err) return console.error(err);
-            const payload = {
-              acct: {
-                id: acct.id
-              }
-            };
-    
-            jwt.sign(
-              payload,
-              process.env.ACCESS_TOKEN_SECRET, 
-              (err, token) => {
-                if (err) throw err;
-                res.status(200).json({
-                  token,
-                  user
-                });
-              }
-            );
+        if (user) {
+          return res.status(400).json({
+            msg: "Email has already been used."
           });
+        }
+
+      user = await User.findOne({
+        username
+      });
+      if (user) {
+        return res.status(400).json({
+          msg: "Username has already been used."
+        });
+      }
+
+      user = new User({
+        username,
+        email,
+      });
+
+      user.save(function(err, doc) {
+        if (err) return console.error(err);
+
+        console.log(user);
+        var userId = user.id;
+
+        let acct = new Account({
+          userId,
+          password
         });
 
+        acct.save(function(err, doc) {
+          if (err) return console.error(err);
+
+          console.log(acct);
+
+          const payload = {
+            acct: {
+              id: acct.id
+            }
+          };
+
+          jwt.sign(
+            payload,
+            process.env.ACCESS_TOKEN_SECRET,
+            (err, token) => {
+              if (err) throw err;
+              res.status(200).json({
+                token,
+                user
+              });
+            }
+          );
+        });
       });
+
     } catch (err) {
       console.log(err.message);
       res.status(500).json({
