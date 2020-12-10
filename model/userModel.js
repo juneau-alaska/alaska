@@ -11,6 +11,7 @@ const UserSchema = mongoose.Schema({
   },
   description: {
     type: String,
+    default: ''
   },
   createdPolls: {
     type: Array,

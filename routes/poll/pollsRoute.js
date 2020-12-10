@@ -15,6 +15,7 @@ router.post("/", auth, async (req, res) => {
             prevId = req.body.prevId,
             createdBy = req.body.createdBy,
             categories = req.body.categories,
+            followingUsers = req.body.followingUsers,
             polls;
 
         if (prevId) {
@@ -23,9 +24,15 @@ router.post("/", auth, async (req, res) => {
                     .sort({ _id: -1 })
                     .limit(limit);
             } else if (categories) {
-                polls = await Poll.find({ _id: { $lt: prevId }, category: { $in: categories } })
-                    .sort({ _id: -1 })
-                    .limit(limit);
+                if (followingUsers) {
+                    polls = await Poll.find({ _id: { $lt: prevId }, $or: [{ createdBy: { $in: followingUsers }}, {category: { $in: categories }}] })
+                        .sort({ _id: -1 })
+                        .limit(limit);
+                } else {
+                    polls = await Poll.find({ _id: { $lt: prevId }, category: { $in: categories } })
+                        .sort({ _id: -1 })
+                        .limit(limit);
+                }
             } else {
                 polls = await Poll.find({ _id: { $lt: prevId }})
                     .sort({ _id: -1 })
@@ -37,9 +44,15 @@ router.post("/", auth, async (req, res) => {
                     .sort({ _id: -1 })
                     .limit(limit);
             } else if (categories) {
-                polls = await Poll.find({ category: { $in: categories } })
-                    .sort({ _id: -1 })
-                    .limit(limit);
+                if (followingUsers) {
+                    polls = await Poll.find({ $or: [{ createdBy: { $in: followingUsers }}, {category: { $in: categories }}] })
+                        .sort({ _id: -1 })
+                        .limit(limit);
+                } else {
+                    polls = await Poll.find({ category: { $in: categories } })
+                        .sort({ _id: -1 })
+                        .limit(limit);
+                }
             } else {
                 polls = await Poll.find()
                     .sort({ _id: -1 })
