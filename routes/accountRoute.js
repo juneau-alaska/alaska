@@ -33,6 +33,12 @@ router.put("/:id/password", auth, async (req, res) => {
 
         acct.password = password;
 
+        const timeElapsed = Date.now();
+        const today = new Date(timeElapsed);
+        const isoString = today.toISOString();
+
+        acct['updatedAt'] = isoString;
+
         await acct.save(function(err) {
             if (err) {
               res.status(400).json({
