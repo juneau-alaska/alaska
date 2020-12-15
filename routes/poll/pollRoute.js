@@ -22,7 +22,7 @@ router.get("/:id", auth, async (req, res) => {
       
   } catch (err) {
       console.log(err.message);
-      res.status(500).send("Error in fetching category");
+      res.status(500).send("Error in fetching poll");
   }
 });
 
@@ -58,7 +58,7 @@ router.post("/", auth, async (req, res) => {
     res.status(200).json(poll);
   } catch (err) {
     console.log(err.message);
-    res.status(400).send("Error in Saving");
+    res.status(400).send("Error in creating poll");
   }
 });
 
