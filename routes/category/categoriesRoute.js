@@ -37,7 +37,7 @@ router.post("/", auth, async (req, res) => {
       
     } catch (err) {
         console.log(err.message);
-        res.status(500).send("Error in fetching category");
+        res.status(500).send("Error in fetching categories");
     }
 });
 

@@ -1,11 +1,13 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 
-const signup = require("./routes/signUpRoute");
-const login = require("./routes/loginRoute");
+const signup = require("./routes/auth/signUpRoute");
+const login = require("./routes/auth/loginRoute");
 
-const account = require("./routes/accountRoute");
-const user = require("./routes/userRoute");
+const account = require("./routes/account/accountRoute");
+
+const user = require("./routes/user/userRoute");
+const users = require("./routes/user/usersRoute");
 
 const poll = require("./routes/poll/pollRoute");
 const polls = require("./routes/poll/pollsRoute");
@@ -46,6 +48,7 @@ app.use("/login", login);
 app.use("/account", account);
 
 // USER ROUTE
+app.use("/users", users);
 app.use("/user", user);
 
 // POLL(S) ROUTE

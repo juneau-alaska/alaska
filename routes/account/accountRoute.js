@@ -4,8 +4,8 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const router = express.Router();
 
-const Account = require("../model/accountModel");
-const auth = require('../middleware/auth');
+const Account = require("../../model/accountModel");
+const auth = require('../../middleware/auth');
 
 /**
  * @method - PUT

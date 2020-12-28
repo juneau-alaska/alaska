@@ -6,8 +6,8 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const router = express.Router();
 
-const Account = require("../model/accountModel");
-const User = require("../model/userModel");
+const Account = require("../../model/accountModel");
+const User = require("../../model/userModel");
 
 /**
  * @method - POST
