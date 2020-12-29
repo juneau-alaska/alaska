@@ -10,7 +10,7 @@ const auth = require('../../middleware/auth');
  * @description - Fetch users using partial string
  * @param - /users
  */
-router.get("/", auth, async (req, res) => {
+router.post("/", auth, async (req, res) => {
     try {
             var partialText = req.body.partialText || "";
             var escapedPartial = escape(partialText);
