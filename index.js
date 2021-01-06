@@ -44,10 +44,10 @@ app.use("/signup", signup);
 // LOGIN ROUTE
 app.use("/login", login);
 
-// ACCOUNT ROUTE
+// ACCOUNT(S) ROUTE
 app.use("/account", account);
 
-// USER ROUTE
+// USER(S) ROUTE
 app.use("/users", users);
 app.use("/user", user);
 
@@ -59,11 +59,11 @@ app.use("/polls", polls);
 app.use("/option", option);
 app.use("/options", options);
 
-// COMMENTS(S) ROUTE
+// COMMENT(S) ROUTE
 app.use("/comment", comment);
 app.use("/comments", comments);
 
-// CATEGOR(Y/IES) ROUTE
+// CATEGORY(/IES) ROUTE
 app.use("/category", category);
 app.use("/categories", categories);
 
