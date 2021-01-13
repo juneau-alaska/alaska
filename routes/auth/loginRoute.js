@@ -46,8 +46,6 @@ router.post("/", async (req, res) => {
           });
       }
 
-      console.log(user);
-
       if (!user) {
         return res.status(400).json({
           message: "Incorrect Email, Username or Password!"
@@ -59,7 +57,6 @@ router.post("/", async (req, res) => {
       });
 
       const isMatch = await bcrypt.compare(password, acct.password);
-      console.log(isMatch);
       if (!isMatch)
         return res.status(400).json({
           message: "Incorrect Email, Username or Password!"
