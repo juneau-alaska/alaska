@@ -28,38 +28,46 @@ router.post("/", async (req, res) => {
       username, 
       password 
     } = req.body;
-    
-    try {
-      let acct, acct1, acct2, user;
-      
-      acct1 = await Account.findOne({
-        email
-      });
 
-      acct2 = await Account.findOne({
-        username
-      });
-      
-      if (!acct1 && !acct2) {
+    try {
+      let user, acct;
+
+      if (email) {
+          console.log('email');
+          user = await User.findOne({
+            email: email
+          });
+      }
+
+      if (username) {
+          console.log('username');
+          user = await User.findOne({
+            username: username
+          });
+      }
+
+      console.log(user);
+
+      if (!user) {
         return res.status(400).json({
           message: "Incorrect Email, Username or Password!"
         });
       }
-      acct = acct1 || acct2;
-      
+
+      acct = await Account.findOne({
+        userId: user._id
+      });
+
       const isMatch = await bcrypt.compare(password, acct.password);
+      console.log(isMatch);
       if (!isMatch)
         return res.status(400).json({
           message: "Incorrect Email, Username or Password!"
         });
 
-      user = await User.findOne({
-        _id: acct.userId
-      });
-
       const payload = {
         acct: {
-          id: acct.id
+          id: acct._id
         }
       };
 
