@@ -7,15 +7,14 @@ const auth = require('../../middleware/auth');
 
 /**
  * @method - GET
- * @description - Get User
+ * @description - Get User by ID
  * @param - /user/:id
  */
 
 router.get("/:id", auth, async (req, res) => {
   const userId = req.params.id
-  
+
   try {
-    // request.user is getting fetched from Middleware after token authentication
     const user = await User.findOne({ "_id": userId });
     res.json(user);
   } catch (e) {
@@ -25,7 +24,7 @@ router.get("/:id", auth, async (req, res) => {
 
 /**
  * @method - GET
- * @description - Get User
+ * @description - Get User by Username
  * @param - /user/username/:username
  */
 

@@ -3,7 +3,6 @@ const mongoose = require("mongoose");
 const PollSchema = mongoose.Schema({
   prompt: {
     type: String,
-    required: true
   },
   category: {
     type: String,

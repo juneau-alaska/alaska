@@ -21,6 +21,8 @@ const comments = require("./routes/comment/commentsRoute");
 const category = require("./routes/category/categoryRoute");
 const categories = require("./routes/category/categoriesRoute");
 
+const image = require("./routes/common/imageRoute");
+
 const InitiateMongoServer = require("./config/db");
 
 // Initiate Mongo Server
@@ -66,6 +68,9 @@ app.use("/comments", comments);
 // CATEGORY(/IES) ROUTE
 app.use("/category", category);
 app.use("/categories", categories);
+
+// IMAGE ROUTE
+app.use("/image", image);
 
 app.listen(PORT, (req, res) => {
   console.log(`Server Started at PORT ${PORT}`);

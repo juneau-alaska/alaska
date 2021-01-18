@@ -12,6 +12,9 @@ const UserSchema = mongoose.Schema({
   description: {
     type: String,
   },
+  profileImg: {
+    type: String,
+  },
   createdPolls: {
     type: Array,
     default: []
