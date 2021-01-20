@@ -12,7 +12,7 @@ const UserSchema = mongoose.Schema({
   description: {
     type: String,
   },
-  profileImg: {
+  profilePhoto: {
     type: String,
   },
   createdPolls: {

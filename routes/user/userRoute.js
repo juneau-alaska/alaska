@@ -80,9 +80,7 @@ router.put("/:id", auth, async (req, res) => {
 
     if (user) {
       for (var key in body) {
-        if (user[key] != body[key]) {
-          user[key] = body[key];
-        }
+        user[key] = body[key];
       }
 
       const timeElapsed = Date.now();
