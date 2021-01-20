@@ -79,28 +79,30 @@ router.put("/:id", auth, async (req, res) => {
     });
 
     if (user) {
-        for (var key in body) {
+      for (var key in body) {
+        if (user[key] != body[key]) {
           user[key] = body[key];
         }
+      }
 
-        const timeElapsed = Date.now();
-        const today = new Date(timeElapsed);
-        const isoString = today.toISOString();
+      const timeElapsed = Date.now();
+      const today = new Date(timeElapsed);
+      const isoString = today.toISOString();
 
-        user['updatedAt'] = isoString;
+      user['updatedAt'] = isoString;
 
-        await user.save(function(err) {
-          if (err) {
-            res.status(400).json({
-              message: err.message
-            });
-          } else {
-            res.status(200).json({
-              message: "Updated User",
-              user
-            });
-          }
-        });
+      await user.save(function(err) {
+        if (err) {
+          res.status(400).json({
+            message: err.message
+          });
+        } else {
+          res.status(200).json({
+            message: "Updated User",
+            user
+          });
+        }
+      });
     } else {
         return res.status(400).json({
           msg: "An error occurred while updating user info."
