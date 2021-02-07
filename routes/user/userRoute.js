@@ -28,11 +28,28 @@ router.get("/:id", auth, async (req, res) => {
  * @param - /user/username/:username
  */
 
-router.get("/username/:username", auth, async (req, res) => {
+router.get("/username/:username", async (req, res) => {
   const username = req.params.username;
 
   try {
     const user = await User.findOne({ "username": username });
+    res.json(user);
+  } catch (e) {
+    res.send({ message: "Error in Fetching user" });
+  }
+});
+
+/**
+ * @method - GET
+ * @description - Get User by Email
+ * @param - /user/email/:email
+ */
+
+router.get("/email/:email", async (req, res) => {
+  const email = req.params.email;
+
+  try {
+    const user = await User.findOne({ "email": email });
     res.json(user);
   } catch (e) {
     res.send({ message: "Error in Fetching user" });

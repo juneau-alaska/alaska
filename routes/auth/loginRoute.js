@@ -33,14 +33,12 @@ router.post("/", async (req, res) => {
       let user, acct;
 
       if (email) {
-          console.log('email');
           user = await User.findOne({
             email: email
           });
       }
 
       if (username) {
-          console.log('username');
           user = await User.findOne({
             username: username
           });

@@ -87,9 +87,6 @@ const deleteS3Images = (req, res) => {
     if (err) {
       console.log(err, err.stack);
     }
-    else {
-      console.log(data);
-    }
   });
 }
 
