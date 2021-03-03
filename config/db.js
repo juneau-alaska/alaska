@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
 
-// const MONGOURI = "mongodb+srv://admin:emaFECiuk20hqXvv@alaska-wx0sk.mongodb.net/test?retryWrites=true&w=majority";
-const MONGOURI = "mongodb://localhost:27017/juneau";
+const MONGOURI = "mongodb+srv://cluster0.vhfcr.mongodb.net/myFirstDatabase?authSource=%24external&authMechanism=MONGODB-X509&retryWrites=true&w=majority";
 
 const InitiateMongoServer = async () => {
   try {
