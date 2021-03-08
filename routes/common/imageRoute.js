@@ -17,7 +17,6 @@ const s3 = new AWS.S3({
 });
 
 const createS3Url = (req, res) => {
-  let bucket = req.body.bucket
   let fileType = req.body.fileType;
   let fileTypeLower = fileType.toLowerCase();
 
@@ -61,7 +60,6 @@ const createS3Url = (req, res) => {
 };
 
 const deleteS3Images = (req, res) => {
-  let bucket = req.body.bucket
   let keys = req.body.keys;
 
   var params = {
