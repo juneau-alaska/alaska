@@ -2,6 +2,9 @@ const mongoose = require("mongoose");
 
 const MONGOURI = "mongodb+srv://cluster0.vhfcr.mongodb.net/myFirstDatabase?authSource=%24external&authMechanism=MONGODB-X509&retryWrites=true&w=majority";
 
+// DEVELOPMENT ENVIRONMENT
+//const MONGOURI = "mongodb://localhost:27017/juneau";
+
 const InitiateMongoServer = async () => {
   try {
     await mongoose.connect(MONGOURI, {

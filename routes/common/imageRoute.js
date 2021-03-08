@@ -9,7 +9,6 @@ const uuid = require("uuid");
 
 AWS.config.update({ region: process.env.BUCKET_REGION });
 
-let S3_BUCKET;
 const s3 = new AWS.S3({
   accessKeyId: process.env.ACCESS_KEY_ID,
   secretAccessKey: process.env.SECRET_ACCESS_KEY,
@@ -21,12 +20,6 @@ const createS3Url = (req, res) => {
   let bucket = req.body.bucket
   let fileType = req.body.fileType;
   let fileTypeLower = fileType.toLowerCase();
-
-  if (bucket === 'poll-option') {
-    S3_BUCKET = 'juneau-poll-options';
-  } else if (bucket === 'user-profile') {
-    S3_BUCKET = 'juneau-user-profiles';
-  }
 
   if (
     fileTypeLower != ".jpg"
@@ -44,7 +37,7 @@ const createS3Url = (req, res) => {
 
   const fileName = uuid.v4();
   const s3Params = {
-    Bucket: S3_BUCKET,
+    Bucket: process.env.S3_BUCKET,
     Key: fileName + "." + fileType,
     Expires: 60 * 60,
     ContentType: "image/" + fileType,
@@ -71,14 +64,8 @@ const deleteS3Images = (req, res) => {
   let bucket = req.body.bucket
   let keys = req.body.keys;
 
-  if (bucket === 'poll-option') {
-    S3_BUCKET = 'juneau-poll-options';
-  } else if (bucket === 'user-profile') {
-    S3_BUCKET = 'juneau-user-profiles';
-  }
-
   var params = {
-    Bucket: S3_BUCKET,
+    Bucket: process.env.S3_BUCKET,
     Delete: {
       Objects: keys,
     },
