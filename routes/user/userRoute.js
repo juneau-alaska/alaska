@@ -4,6 +4,8 @@ const router = express.Router();
 
 const User = require("../../model/userModel");
 const auth = require('../../middleware/auth');
+const crypto = require("crypto");
+const sendEmail = require("../../utils/email/sendEmail");
 
 /**
  * @method - GET
@@ -44,7 +46,6 @@ router.get("/username/:username", async (req, res) => {
  * @description - Get User by Email
  * @param - /user/email/:email
  */
-
 router.get("/email/:email", async (req, res) => {
   const email = req.params.email;
 
@@ -189,10 +190,37 @@ router.post("/", [
         id: user.id
       });
     } catch (err) {
-      console.log(err.message);
       res.status(500).send("Error in Saving");
     }
   }
 );
+
+/**
+ * @method - POST
+ * @description - Reset Password
+ * @param - /user/reset-password
+ */
+router.post('/reset-password', async (req, res) => {
+  const email = req.body.email
+
+  try {
+    var user = await User.findOne({
+      email: email
+    });
+
+    if (!user) {
+      res.status(400).json({
+        msg: 'No user found with that email address.'
+      });
+    } else {
+      let resetToken = crypto.randomBytes(32).toString("hex");
+      const link = `${process.env.CLIENT_URL}/passwordReset?token=${resetToken}&id=${user._id}`;
+      sendEmail(user.email, "Password Reset Request", {name: user.username,link: link,}, "./template/requestResetPassword.handlebars");
+    }
+  } catch {
+    res.status(500).send('Error Sending Link');
+  }
+
+});
   
 module.exports = router;
