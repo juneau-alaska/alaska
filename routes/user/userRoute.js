@@ -4,8 +4,10 @@ const router = express.Router();
 
 const User = require("../../model/userModel");
 const auth = require('../../middleware/auth');
-const crypto = require("crypto");
+const Token = require("../../model/tokenModel");
 const sendEmail = require("../../utils/email/sendEmail");
+const crypto = require("crypto");
+const bcrypt = require("bcryptjs");
 
 /**
  * @method - GET
@@ -197,28 +199,44 @@ router.post("/", [
 
 /**
  * @method - POST
- * @description - Reset Password
- * @param - /user/reset-password
+ * @description - Request Password
+ * @param - /user/request_password
  */
-router.post('/reset-password', async (req, res) => {
+router.post('/request_password', async (req, res) => {
   const email = req.body.email
 
   try {
-    var user = await User.findOne({
-      email: email
-    });
+    var user = await User.findOne({ email });
 
     if (!user) {
       res.status(400).json({
         msg: 'No user found with that email address.'
       });
     } else {
+      let token = await Token.findOne({ userId: user._id });
+      if (token) await token.deleteOne();
       let resetToken = crypto.randomBytes(32).toString("hex");
+      const salt = await bcrypt.genSalt(10);
+      const hash = await bcrypt.hash(resetToken, salt);
+
+      await new Token({
+        userId: user._id,
+        token: hash,
+        createdAt: Date.now(),
+      }).save();
+
+      console.log(hash);
+
       const link = `${process.env.CLIENT_URL}/passwordReset?token=${resetToken}&id=${user._id}`;
       sendEmail(user.email, "Password Reset Request", {name: user.username,link: link,}, "./template/requestResetPassword.handlebars");
+      res.status(200).json({
+        message: "Email sent."
+      });
     }
   } catch {
-    res.status(500).send('Error Sending Link');
+    res.status(500).json({
+      message: 'Error occurred while trying to send link.'
+    });
   }
 
 });

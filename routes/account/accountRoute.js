@@ -5,6 +5,8 @@ const jwt = require("jsonwebtoken");
 const router = express.Router();
 
 const Account = require("../../model/accountModel");
+const User = require("../../model/userModel");
+const Token = require("../../model/tokenModel");
 const auth = require('../../middleware/auth');
 
 /**
@@ -15,8 +17,8 @@ const auth = require('../../middleware/auth');
 router.put("/:id/password", auth, async (req, res) => {
     const userId = req.params.id
     const body = req.body;
-    const currentPassword = req.body.currentPassword;
-    const newPassword = req.body.newPassword;
+    const currentPassword = body.currentPassword;
+    const newPassword = body.newPassword;
 
     try {
         const acct = await Account.findOne({ "userId": userId });
@@ -53,6 +55,56 @@ router.put("/:id/password", auth, async (req, res) => {
       } catch (e) {
         res.send({ message: "Error occurred while changing password." });
       }
+});
+
+/**
+ * @method - POST
+ * @param - /account/reset_password
+ * @description - Reset Password
+ */
+router.put("/reset_password", async (req, res) => {
+    const body = req.body;
+    const userId = body.userId
+    const token = body.token;
+    const password = body.password;
+
+    try {
+      let passwordResetToken = await Token.findOne({ userId });
+      if (!passwordResetToken) {
+        throw new Error("Invalid or expired password reset token");
+      }
+
+      const isValid = await bcrypt.compare(token, passwordResetToken.token);
+      if (!isValid) {
+        throw new Error("Invalid or expired password reset token");
+      }
+
+      const salt = await bcrypt.genSalt(10);
+      const hash = await bcrypt.hash(password, salt);
+      await Account.updateOne(
+        { userId: userId },
+        { $set: { password: hash } },
+        { new: true }
+      );
+
+      const user = await User.findById({ _id: userId });
+      sendEmail(
+        user.email,
+        "Password Reset Successfully",
+        {
+          name: user.username,
+        },
+        "./template/resetPassword.handlebars"
+      );
+      await passwordResetToken.deleteOne();
+      res.status(200).json({
+        message: "Password successfully updated."
+      });
+    } catch (e) {
+      res.status(400).json({
+        message: "Error occurred while resetting password."
+      });
+    }
 });
 
 module.exports = router;
