@@ -35,6 +35,7 @@ const createS3Url = (req, res) => {
   fileType = fileType.substring(1, fileType.length);
 
   const fileName = uuid.v4();
+
   const s3Params = {
     Bucket: process.env.S3_BUCKET,
     Key: fileName + "." + fileType,
@@ -53,7 +54,7 @@ const createS3Url = (req, res) => {
       message: "Url generated",
       uploadUrl: data,
       downloadUrl:
-        `https://${S3_BUCKET}.s3.amazonaws.com/${fileName}` + "." + fileType,
+        `https://${s3Params.Bucket}.s3.amazonaws.com/${fileName}` + "." + fileType,
     };
     return res.status(200).json(returnData);
   });

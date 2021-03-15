@@ -225,8 +225,6 @@ router.post('/request_password', async (req, res) => {
         createdAt: Date.now(),
       }).save();
 
-      console.log(hash);
-
       const link = `${process.env.CLIENT_URL}/passwordReset?token=${resetToken}&id=${user._id}`;
       sendEmail(user.email, "Password Reset Request", {name: user.username,link: link,}, "./template/requestResetPassword.handlebars");
       res.status(200).json({
