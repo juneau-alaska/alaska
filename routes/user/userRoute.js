@@ -39,7 +39,9 @@ router.get("/username/:username", async (req, res) => {
     const user = await User.findOne({ "username": username });
     res.json(user);
   } catch (e) {
-    res.send({ message: "Error in Fetching user" });
+    return res.status(500).json({
+      msg: "Error while fetching user."
+    });
   }
 });
 
@@ -55,7 +57,9 @@ router.get("/email/:email", async (req, res) => {
     const user = await User.findOne({ "email": email });
     res.json(user);
   } catch (e) {
-    res.send({ message: "Error in Fetching user" });
+    return res.status(500).json({
+      msg: "Error while fetching user."
+    });
   }
 });
 
