@@ -8,6 +8,7 @@ const Token = require("../../model/tokenModel");
 const sendEmail = require("../../utils/email/sendEmail");
 const crypto = require("crypto");
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 
 /**
  * @method - GET
@@ -219,9 +220,10 @@ router.post('/request_password', async (req, res) => {
     } else {
       let token = await Token.findOne({ userId: user._id });
       if (token) await token.deleteOne();
-      let resetToken = crypto.randomBytes(32).toString("hex");
+      let code = Math.floor(100000 + Math.random() * 900000).toString();
+
       const salt = await bcrypt.genSalt(10);
-      const hash = await bcrypt.hash(resetToken, salt);
+      const hash = await bcrypt.hash(code, salt);
 
       await new Token({
         userId: user._id,
@@ -229,18 +231,53 @@ router.post('/request_password', async (req, res) => {
         createdAt: Date.now(),
       }).save();
 
-      const link = `${process.env.CLIENT_URL}/passwordReset?token=${resetToken}&id=${user._id}`;
-      sendEmail(user.email, "Password Reset Request", {name: user.username,link: link,}, "./template/requestResetPassword.handlebars");
+      sendEmail(user.email, "Password Reset Request", {username: user.username, code: code}, "./template/requestResetPassword.handlebars");
       res.status(200).json({
-        message: "Email sent."
+        userId: user._id,
+        message: "Email has been sent."
       });
     }
   } catch {
     res.status(500).json({
-      message: 'Error occurred while trying to send link.'
+      message: 'Error has occurred.'
     });
   }
+});
 
+/**
+ * @method - POST
+ * @description - Validate Password Token
+ * @param - /user/validate_code
+ */
+router.post('/validate_code', async (req, res) => {
+  const userId = req.body.userId
+  const code = req.body.code;
+
+  try {
+    var resetToken = await Token.findOne({ userId });
+
+    if (!resetToken) {
+      res.status(400).json({
+        message: 'Token has expired.'
+      });
+    }
+
+    const isMatch = await bcrypt.compare(code, resetToken.token);
+    if (isMatch) {
+      await resetToken.deleteOne();
+      res.status(200).json({
+        message: 'Success'
+      });
+    } else {
+      res.status(400).json({
+        message: 'Incorrect code.'
+      });
+    }
+  } catch {
+    res.status(500).json({
+      message: 'Error has occurred.'
+    });
+  }
 });
   
 module.exports = router;

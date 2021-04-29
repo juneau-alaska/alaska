@@ -7,6 +7,7 @@ const router = express.Router();
 const Account = require("../../model/accountModel");
 const User = require("../../model/userModel");
 const Token = require("../../model/tokenModel");
+const sendEmail = require("../../utils/email/sendEmail");
 const auth = require('../../middleware/auth');
 
 /**
@@ -62,23 +63,12 @@ router.put("/:id/password", auth, async (req, res) => {
  * @param - /account/reset_password
  * @description - Reset Password
  */
-router.put("/reset_password", async (req, res) => {
+router.post("/reset_password", async (req, res) => {
     const body = req.body;
     const userId = body.userId
-    const token = body.token;
     const password = body.password;
 
     try {
-      let passwordResetToken = await Token.findOne({ userId });
-      if (!passwordResetToken) {
-        throw new Error("Invalid or expired password reset token");
-      }
-
-      const isValid = await bcrypt.compare(token, passwordResetToken.token);
-      if (!isValid) {
-        throw new Error("Invalid or expired password reset token");
-      }
-
       const salt = await bcrypt.genSalt(10);
       const hash = await bcrypt.hash(password, salt);
       await Account.updateOne(
@@ -88,15 +78,9 @@ router.put("/reset_password", async (req, res) => {
       );
 
       const user = await User.findById({ _id: userId });
-      sendEmail(
-        user.email,
-        "Password Reset Successfully",
-        {
-          name: user.username,
-        },
-        "./template/resetPassword.handlebars"
-      );
-      await passwordResetToken.deleteOne();
+
+      sendEmail(user.email, "Password Reset Successfully", {username: user.username}, "./template/resetPassword.handlebars");
+
       res.status(200).json({
         message: "Password successfully updated."
       });
