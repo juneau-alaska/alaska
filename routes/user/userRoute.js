@@ -2,8 +2,9 @@ const express = require("express");
 const { check, validationResult } = require('express-validator');
 const router = express.Router();
 
-const User = require("../../model/userModel");
 const auth = require('../../middleware/auth');
+const User = require("../../model/userModel");
+const Notification = require("../../model/notificationModel");
 const Token = require("../../model/tokenModel");
 const sendEmail = require("../../utils/email/sendEmail");
 const crypto = require("crypto");
@@ -278,6 +279,24 @@ router.post('/validate_code', async (req, res) => {
       message: 'Error has occurred.'
     });
   }
+});
+
+/**
+ * @method - GET
+ * @description - FETCH NOTIFICATIONS
+ * @param - /user/:id/notifications
+ */
+router.post('/:id/notifications', async (req, res) => {
+  const userId = req.params.id
+
+  try {
+      const notifications = await Notification.find({ "receiver": userId });
+      res.status(200).json({
+        notifications
+      });
+    } catch (e) {
+      res.send({ message: "Error while getting notifications" });
+    }
 });
   
 module.exports = router;

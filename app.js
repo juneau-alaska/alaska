@@ -21,6 +21,8 @@ const comments = require("./routes/comment/commentsRoute");
 const category = require("./routes/category/categoryRoute");
 const categories = require("./routes/category/categoriesRoute");
 
+const notification = require("./routes/notification/notificationRoute");
+
 const image = require("./routes/common/imageRoute");
 
 const InitiateMongoServer = require("./config/db");
@@ -65,9 +67,12 @@ app.use("/options", options);
 app.use("/comment", comment);
 app.use("/comments", comments);
 
-// CATEGORY(/IES) ROUTE
+// CATEGORY(IES) ROUTE
 app.use("/category", category);
 app.use("/categories", categories);
+
+// NOTIFICATION(S) ROUTE
+app.use("/notification", notification);
 
 // IMAGE ROUTE
 app.use("/image", image);

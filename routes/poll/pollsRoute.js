@@ -6,6 +6,23 @@ const auth = require('../../middleware/auth');
 
 /**
 * @method - POST
+* @description - Popular Poll
+* @param - /polls/popular
+*/
+//router.post("/popular", auth, async (req, res) => {
+//  try {
+//    var polls = await Poll.find({
+//
+//    });
+//
+//    res.status(200).send(polls);
+//  } catch {
+//    res.status(400).send("Failed to retrieve.");
+//  }
+//});
+
+/**
+* @method - POST
 * @description - Query Polls by Created Date and Category
 * @param - /polls
 */
