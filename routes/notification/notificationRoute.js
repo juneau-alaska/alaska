@@ -10,7 +10,6 @@ const auth = require('../../middleware/auth');
  * @param - /notification
  */
 router.post("/", auth, async (req, res) => {
-
   const {
     sender,
     receiver,

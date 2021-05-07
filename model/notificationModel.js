@@ -11,6 +11,14 @@ const NotificationSchema = mongoose.Schema({
       type: mongoose.Schema.Types.ObjectId,
       ref: 'user'
     }],
+    redirect: {
+      class: {
+        type: String
+      },
+      classId: {
+        type: mongoose.Schema.Types.ObjectId,
+      },
+    }
     message: String, // any description of the notification message
     read_by:[{
      readerId: {
