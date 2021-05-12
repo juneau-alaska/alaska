@@ -4,23 +4,28 @@ const NotificationSchema = mongoose.Schema({
     // Notification creator
     sender: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'user'
+      ref: 'user',
+      required: true
     },
     // Ids of the receivers of the notification
     receiver: [{
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'user'
+      ref: 'user',
+      required: true
     }],
-    redirect: {
-      class: {
-        type: String
-      },
-      classId: {
-        type: mongoose.Schema.Types.ObjectId,
-      },
-    }
-    message: String, // any description of the notification message
-    read_by:[{
+    pollId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'poll'
+    },
+    commentId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'comment'
+    },
+    message: {
+      type: String,
+      required: true
+    },
+    read_by: [{
      readerId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'user'

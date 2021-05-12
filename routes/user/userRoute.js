@@ -283,10 +283,10 @@ router.post('/validate_code', async (req, res) => {
 
 /**
  * @method - GET
- * @description - FETCH NOTIFICATIONS
+ * @description - Get Notifications
  * @param - /user/:id/notifications
  */
-router.post('/:id/notifications', async (req, res) => {
+router.get('/:id/notifications', async (req, res) => {
   const userId = req.params.id
 
   try {
@@ -295,7 +295,7 @@ router.post('/:id/notifications', async (req, res) => {
         notifications
       });
     } catch (e) {
-      res.send({ message: "Error while getting notifications" });
+      res.send({ message: "Error occurred while fetching notifications" });
     }
 });
   

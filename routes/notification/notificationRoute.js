@@ -14,6 +14,8 @@ router.post("/", auth, async (req, res) => {
     sender,
     receiver,
     message,
+    pollId,
+    commentId,
   } = req.body;
 
   try {
@@ -21,12 +23,14 @@ router.post("/", auth, async (req, res) => {
       sender,
       receiver,
       message,
+      pollId,
+      commentId,
     });
 
     await notification.save();
     res.status(200);
   } catch (err) {
-    res.status(400).send(err.message);
+    res.status(400).send({message: err.message});
   }
 });
 
