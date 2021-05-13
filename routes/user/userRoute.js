@@ -290,7 +290,10 @@ router.get('/:id/notifications', async (req, res) => {
   const userId = req.params.id
 
   try {
-      const notifications = await Notification.find({ "receiver": userId });
+      const notifications = await Notification.find({ "receiver": userId })
+        .sort({ _id: -1 })
+        .limit(50);
+
       res.status(200).json({
         notifications
       });
