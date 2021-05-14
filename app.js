@@ -22,6 +22,7 @@ const category = require("./routes/category/categoryRoute");
 const categories = require("./routes/category/categoriesRoute");
 
 const notification = require("./routes/notification/notificationRoute");
+const notifications = require("./routes/notification/notificationsRoute");
 
 const image = require("./routes/common/imageRoute");
 
@@ -73,6 +74,7 @@ app.use("/categories", categories);
 
 // NOTIFICATION(S) ROUTE
 app.use("/notification", notification);
+app.use("/notifications", notifications);
 
 // IMAGE ROUTE
 app.use("/image", image);

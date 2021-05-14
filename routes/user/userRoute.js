@@ -301,5 +301,5 @@ router.get('/:id/notifications', async (req, res) => {
       res.send({ message: "Error occurred while fetching notifications" });
     }
 });
-  
+
 module.exports = router;
