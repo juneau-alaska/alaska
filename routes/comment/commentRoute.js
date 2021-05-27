@@ -40,20 +40,22 @@ router.post("/", auth, async (req, res) => {
   }
 
   const {
-    content,
-    parent,
+    comment,
+    pollId,
+    parentCommentId,
     createdBy
   } = req.body;
 
   try {
-    var comment = new Comment({
-      content,
-      parent,
+    var commentModel = new Comment({
+      comment,
+      pollId,
+      parentCommentId,
       createdBy
     });
-    await comment.save();
 
-    res.status(200).json(comment);
+    await commentModel.save();
+    res.status(200).json(commentModel);
 
   } catch (err) {
     console.log(err.message);

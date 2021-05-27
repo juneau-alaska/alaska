@@ -6,23 +6,25 @@ const Comment = require("../../model/commentModel");
 const auth = require('../../middleware/auth');
 
 /**
- * @method - GET
- * @description - Get All Comments by Parent ID
- * @param - /comments/:parentID
+ * @method - POST
+ * @description - Get All Comments by Poll ID
+ * @param - /comments
  */
-router.get("/:parentID", auth, async (req, res) => {
-    const parentID = req.params.parentID;
+router.post("/", auth, async (req, res) => {
+    const {
+      pollId,
+    } = req.body;
 
     try {
         let comments = await Comment.find({
-            parent: parentID
+            pollId: pollId
         }).sort({ _id: 1 });
 
         res.status(200).send(comments);
 
     } catch (err) {
         console.log(err.message);
-        res.status(400).send("Error in fetching category");
+        res.status(400).send("Failed to retrieve comments.");
     }
 });
 

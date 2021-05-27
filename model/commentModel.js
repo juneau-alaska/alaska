@@ -1,20 +1,24 @@
 const mongoose = require("mongoose");
 
 const CommentSchema = mongoose.Schema({
-  content: {
+  comment: {
     type: String,
     required: true
   },
-  // poll or comment id
-  parent: {
-    type: String,
-    required: true
+  pollId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'poll',
+    required: true,
   },
-  // comment ids
-  replies: {
-    type: Array,
-    default: []
+  parentCommentId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'comment',
   },
+  /* Comment IDs */
+  replies: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'comment'
+  }],
   likes: {
     type: Number,
     min: 0,
