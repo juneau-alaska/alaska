@@ -82,7 +82,7 @@ router.put("/:id", auth, async (req, res) => {
       user = await User.findOne({
          email: email
       });
-      if (user) {
+      if (user && user['_id'] != _id) {
         return res.status(400).json({
           msg: "Email has already been used."
         });
@@ -93,7 +93,7 @@ router.put("/:id", auth, async (req, res) => {
       user = await User.findOne({
          username: username
       });
-      if (user) {
+      if (user && user['_id'] != _id) {
         return res.status(400).json({
           msg: "Username has already been used."
         });
