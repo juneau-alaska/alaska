@@ -13,12 +13,18 @@ const auth = require('../../middleware/auth');
 router.post("/", auth, async (req, res) => {
     const {
       pollId,
+      parentCommentId,
     } = req.body;
+
+    var batchSize = parentCommentId != null ? 10 : 50;
 
     try {
         let comments = await Comment.find({
-            pollId: pollId
-        }).sort({ _id: 1 });
+            pollId: pollId,
+            parentCommentId: parentCommentId,
+        })
+        .limit(batchSize)
+        .sort({ _id: 1 });
 
         res.status(200).send(comments);
 
