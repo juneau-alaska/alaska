@@ -3,6 +3,7 @@ const { check, validationResult } = require('express-validator');
 const router = express.Router();
 
 const Comment = require("../../model/commentModel");
+const Poll = require("../../model/pollModel");
 const auth = require('../../middleware/auth');
 
 /**
@@ -146,5 +147,48 @@ router.put("/like/:id", auth, async (req, res) => {
     res.status(500).send("Error in updating comment");
   }
 });
+
+/**
+* @method - DELETE
+* @description - Delete Comment
+* @param - /comment/:id
+*/
+router.delete("/:id", auth, async (req, res) => {
+  const _id = req.params.id;
+
+  var poll = await Poll.findOne({
+        comments: _id
+      }),
+      comments = poll['comments'],
+      replies = await Comment.find({ parentCommentId: _id });
+
+  Comment.deleteOne({ _id: _id }, function (err) {
+    if (err) {
+      res.status(400).send("Error in deleting poll");
+    } else {
+
+      comments.splice(comments.indexOf(_id), 1);
+
+      if (replies.length > 0) {
+        for (var i=0; i<replies.length; i++) {
+          var reply = replies[i];
+
+          comments.splice(comments.indexOf(reply['_id']), 1);
+        }
+
+        poll['comments'] = comments;
+        poll.save();
+
+        Comment.deleteMany({ parentCommentId: _id }, function (err) {
+          if (err) {
+            console.log(err);
+          }
+        });
+      }
+
+      res.status(200).send("Successfully deleted poll");
+    }
+  });
+})
 
 module.exports = router;
